@@ -65,11 +65,14 @@ Select an application from the dropdown to browse its keyboard shortcuts. Click 
 
 Chrome, Firefox, VS Code, Sublime Text, IntelliJ IDEA, Word, Excel, PowerPoint, Photoshop, Premiere Pro, Figma, Blender, Slack, Discord, Notion, Spotify, Zoom, Outlook, Terminal, Finder/Explorer
 
+- **Installable PWA** — Add to home screen on mobile or desktop via web app manifest
+
 ## Project Structure
 
 ```
 boardkey/
 ├── index.html              # Single-page app shell
+├── manifest.json           # PWA web app manifest
 ├── css/styles.css          # All styles, dark/light themes
 ├── js/
 │   ├── app.js              # Main controller
@@ -79,6 +82,12 @@ boardkey/
 │   ├── keyboard-renderer.js# Visual keyboard rendering
 │   ├── detector.js         # Platform/layout auto-detection
 │   └── sharing.js          # URL encode/decode
+├── assets/
+│   ├── favicon.ico         # Multi-size favicon (16/32/48)
+│   ├── apple-touch-icon.png# 180×180 iOS icon
+│   ├── icon-192.png        # PWA icon
+│   ├── icon-512.png        # PWA icon (high-res)
+│   └── og-image.png        # Open Graph social preview
 └── package.json
 ```
 
