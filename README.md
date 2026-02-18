@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/icon-512.png" alt="BoardKey" width="128">
+</p>
+
 # BoardKey
 
 Universal keyboard shortcut translator. Press a shortcut on your keyboard, share the URL, and anyone can see it translated to their own keyboard layout and platform.
