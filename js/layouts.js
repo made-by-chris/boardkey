@@ -234,6 +234,87 @@ const macJisBottomRow = [
   { code: 'ControlRight', width: 1.25, modifier: true },
 ];
 
+// Navigation cluster, arrow keys, and numpad extensions per row
+const navExtension = [
+  // Row 0: fn row
+  [
+    { spacer: 0.5 },
+    { code: 'PrintScreen', width: 1, label: 'PrtSc' },
+    { code: 'ScrollLock', width: 1, label: 'ScrLk' },
+    { code: 'Pause', width: 1, label: 'Pause' },
+  ],
+  // Row 1: number row
+  [
+    { spacer: 0.5 },
+    { code: 'Insert', width: 1, label: 'Ins' },
+    { code: 'Home', width: 1, label: 'Home' },
+    { code: 'PageUp', width: 1, label: 'PgUp' },
+  ],
+  // Row 2: top letter row
+  [
+    { spacer: 0.5 },
+    { code: 'Delete', width: 1, label: 'Del' },
+    { code: 'End', width: 1, label: 'End' },
+    { code: 'PageDown', width: 1, label: 'PgDn' },
+  ],
+  // Row 3: home row — empty nav area
+  [],
+  // Row 4: bottom row — up arrow centered
+  [
+    { spacer: 1.5 },
+    { code: 'ArrowUp', width: 1, label: '\u2191' },
+  ],
+  // Row 5: modifier row — arrow keys
+  [
+    { spacer: 0.5 },
+    { code: 'ArrowLeft', width: 1, label: '\u2190' },
+    { code: 'ArrowDown', width: 1, label: '\u2193' },
+    { code: 'ArrowRight', width: 1, label: '\u2192' },
+  ],
+];
+
+const numpadExtension = [
+  // Row 0: fn row — nothing
+  [],
+  // Row 1: number row
+  [
+    { spacer: 0.25 },
+    { code: 'NumLock', width: 1, label: 'Num' },
+    { code: 'NumpadDivide', width: 1, label: '/' },
+    { code: 'NumpadMultiply', width: 1, label: '*' },
+    { code: 'NumpadSubtract', width: 1, label: '\u2212' },
+  ],
+  // Row 2: top letter row
+  [
+    { spacer: 0.25 },
+    { code: 'Numpad7', width: 1, label: '7' },
+    { code: 'Numpad8', width: 1, label: '8' },
+    { code: 'Numpad9', width: 1, label: '9' },
+    { code: 'NumpadAdd', width: 1, label: '+' },
+  ],
+  // Row 3: home row
+  [
+    { spacer: 0.25 },
+    { code: 'Numpad4', width: 1, label: '4' },
+    { code: 'Numpad5', width: 1, label: '5' },
+    { code: 'Numpad6', width: 1, label: '6' },
+  ],
+  // Row 4: bottom row
+  [
+    { spacer: 0.25 },
+    { code: 'Numpad1', width: 1, label: '1' },
+    { code: 'Numpad2', width: 1, label: '2' },
+    { code: 'Numpad3', width: 1, label: '3' },
+    { code: 'NumpadEnter', width: 1, label: 'Ent' },
+  ],
+  // Row 5: modifier row
+  [
+    { spacer: 0.25 },
+    { code: 'Numpad0', width: 2, label: '0' },
+    { code: 'NumpadDecimal', width: 1, label: '.' },
+  ],
+];
+
 export const physicalLayouts = {
   ansi: ansiRows,
   iso: isoRows,
@@ -241,8 +322,8 @@ export const physicalLayouts = {
 };
 
 /**
- * Get the physical layout rows, with platform-specific modifier row.
- * On Mac, the bottom row is swapped to fn/Control/Option/Command order.
+ * Get the physical layout rows, with platform-specific modifier row,
+ * plus navigation cluster, arrow keys, and numpad.
  * @param {string} physicalType - 'ansi', 'iso', 'jis'
  * @param {string} platform - 'mac', 'windows', 'linux'
  * @returns {Array} array of rows
@@ -250,12 +331,20 @@ export const physicalLayouts = {
 export function getPhysicalLayout(physicalType, platform) {
   const base = physicalLayouts[physicalType] || physicalLayouts.ansi;
 
+  let rows;
   if (platform === 'mac') {
     const macRow = physicalType === 'jis' ? macJisBottomRow : macAnsiBottomRow;
-    return [...base.slice(0, -1), macRow];
+    rows = [...base.slice(0, -1), macRow];
+  } else {
+    rows = [...base];
   }
 
-  return base;
+  // Append navigation cluster, arrows, and numpad to each row
+  return rows.map((row, i) => [
+    ...row,
+    ...(navExtension[i] || []),
+    ...(numpadExtension[i] || []),
+  ]);
 }
 
 // ============================================================================
