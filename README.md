@@ -6,6 +6,8 @@
 
 Universal keyboard shortcut translator. Press a shortcut on your keyboard, share the URL, and anyone can see it translated to their own keyboard layout and platform.
 
+**Try it now: [made-by-chris.github.io/boardkey](https://made-by-chris.github.io/boardkey/)**
+
 ## Features
 
 - **20+ keyboard layouts** — QWERTY, QWERTZ, AZERTY, Cyrillic, JIS, Dvorak, Colemak, and more
