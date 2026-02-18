@@ -209,6 +209,11 @@ function bindEvents() {
   // Copy URL
   dom.btnCopyUrl.addEventListener('click', copyShareURL);
 
+  // Copy as text for specific platform
+  document.querySelectorAll('.btn-copy-platform').forEach(btn => {
+    btn.addEventListener('click', () => copyShortcutAsText(btn.dataset.copyPlatform));
+  });
+
   // Dismiss shared banner
   dom.btnDismissBanner.addEventListener('click', () => {
     dom.sharedBanner.classList.add('hidden');
@@ -737,6 +742,33 @@ async function copyShareURL() {
     dom.copyFeedback.textContent = 'Copied!';
     setTimeout(() => dom.copyFeedback.classList.add('hidden'), 1500);
   }
+}
+
+// ── Copy Shortcut as Text ───────────────────────────────────
+async function copyShortcutAsText(platform) {
+  const sc = state.currentShortcut;
+  if (!sc) return;
+
+  const targetMapping = layoutMappings[state.layoutId] || layoutMappings['en-us'];
+  const sourceMapping = layoutMappings[sc.layout] || layoutMappings['en-us'];
+  const translated = translateShortcut(sc, platform, targetMapping, sourceMapping);
+  const text = translated.displayString;
+
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    // Fallback: temporary textarea
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+
+  dom.copyFeedback.textContent = `Copied: ${text}`;
+  dom.copyFeedback.classList.remove('hidden');
+  setTimeout(() => dom.copyFeedback.classList.add('hidden'), 1500);
 }
 
 // ── Theme ──────────────────────────────────────────────────

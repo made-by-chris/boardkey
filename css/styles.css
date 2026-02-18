@@ -618,6 +618,28 @@ body {
   border-color: var(--accent-hover);
 }
 
+.copy-as-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.copy-as-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.btn-copy-platform {
+  padding: 4px 8px;
+}
+
+.btn-copy-platform .icon-xs {
+  width: 14px;
+  height: 14px;
+}
+
 .copy-feedback {
   font-size: 0.75rem;
   color: #4caf50;
