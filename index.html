@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BoardKey — Universal Keyboard Shortcut Translator</title>
+  <meta name="description" content="Press a shortcut on your keyboard, share the URL, and anyone can see it translated to their own keyboard layout and platform.">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌨</text></svg>">
+</head>
+<body>
+  <div id="app">
+    <!-- Toolbar: everything in one row -->
+    <div class="toolbar">
+      <h1 class="logo">Board<span class="logo-accent">Key</span></h1>
+
+      <div class="toolbar-divider"></div>
+
+      <select id="select-layout" class="select select-compact" aria-label="Keyboard layout"></select>
+
+      <div class="platform-toggle" id="platform-toggle">
+        <button class="platform-btn" data-platform="mac" title="macOS" aria-label="macOS">
+          <svg class="platform-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        </button>
+        <button class="platform-btn" data-platform="windows" title="Windows" aria-label="Windows">
+          <svg class="platform-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.548l7.065-0.966v6.822H3V5.548zm0 12.904l7.065 0.966v-6.822H3v5.856zm7.935 1.083L21 21V12.526h-10.065v7.009zm0-15.07v7.009H21V3l-10.065 1.465z"/></svg>
+        </button>
+        <button class="platform-btn" data-platform="linux" title="Linux" aria-label="Linux">
+          <svg class="platform-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12.5 2c-1.5 0-2.5 1.5-2.5 3.5 0 .71.16 1.38.44 1.97-.93.52-1.74 1.26-2.31 2.17C7.42 10.93 7 12.42 7 14c0 .77.07 1.5.2 2.17-.87.57-1.6 1.32-1.95 2.33-.25.72-.25 1.5.15 2.15.42.67 1.15 1.05 1.9 1.2.73.15 1.53.1 2.25-.12.6-.18 1.15-.5 1.57-.92.38.12.78.19 1.2.19h1.36c.42 0 .82-.07 1.2-.19.42.42.97.74 1.57.92.72.22 1.52.27 2.25.12.75-.15 1.48-.53 1.9-1.2.4-.65.4-1.43.15-2.15-.35-1.01-1.08-1.76-1.95-2.33.13-.67.2-1.4.2-2.17 0-1.58-.42-3.07-1.13-4.36-.57-.91-1.38-1.65-2.31-2.17.28-.59.44-1.26.44-1.97C15 3.5 14 2 12.5 2zm0 1.5c.63 0 1 .82 1 2s-.37 2-1 2-1-.82-1-2 .37-2 1-2zm-2.06 5.15c.55-.32 1.25-.52 2.06-.52s1.51.2 2.06.52c.71.41 1.3 1.06 1.73 1.85.55 1.02.91 2.27.91 3.5 0 .56-.05 1.1-.14 1.6H9.94c-.09-.5-.14-1.04-.14-1.6 0-1.23.36-2.48.91-3.5.43-.79 1.02-1.44 1.73-1.85zM9.5 16h6c-.2.65-.57 1.2-1.05 1.6-.55.46-1.22.73-1.95.73s-1.4-.27-1.95-.73c-.48-.4-.85-.95-1.05-1.6zm-1.8 2.82c.42-.21.88-.42 1.37-.55.32.5.73.93 1.21 1.26-.3.22-.65.38-1.02.49-.52.16-1.08.18-1.52.09-.45-.09-.72-.28-.85-.49-.1-.16-.12-.38-.02-.65.14-.39.44-.78.83-1.15zm9.6 0c.39.37.69.76.83 1.15.1.27.08.49-.02.65-.13.21-.4.4-.85.49-.44.09-1 .07-1.52-.09-.37-.11-.72-.27-1.02-.49.48-.33.89-.76 1.21-1.26.49.13.95.34 1.37.55z"/></svg>
+        </button>
+      </div>
+
+      <select id="select-app" class="select select-compact" aria-label="Application">
+        <option value="">General</option>
+      </select>
+
+      <div class="toolbar-divider"></div>
+
+      <div id="shortcut-text" class="shortcut-text-inline">
+        <span class="shortcut-placeholder">Press a shortcut...</span>
+      </div>
+      <div id="shortcut-action" class="shortcut-action-inline hidden"></div>
+
+      <div class="toolbar-spacer"></div>
+
+      <button id="btn-mode" class="toolbar-btn" title="Real mode: hold keys simultaneously. Soft mode: click one at a time.">
+        <span class="mode-dot" id="mode-dot"></span>
+        <span id="mode-label">Real</span>
+      </button>
+      <button id="btn-reset" class="toolbar-btn" title="Clear current shortcut">
+        <svg class="icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
+
+      <div class="toolbar-divider"></div>
+
+      <button id="btn-theme" class="toolbar-btn" title="Toggle theme" aria-label="Toggle theme">
+        <svg class="icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+      <button id="btn-help" class="toolbar-btn" title="How to use" aria-label="Help">
+        <svg class="icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5"/></svg>
+      </button>
+    </div>
+
+    <!-- Shared shortcut banner (shown when URL contains a shortcut) -->
+    <div id="shared-banner" class="shared-banner hidden">
+      <div class="shared-banner-content">
+        <svg class="icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        <span id="shared-banner-detail" class="shared-banner-text"></span>
+        <button id="btn-dismiss-banner" class="toolbar-btn">Dismiss</button>
+      </div>
+    </div>
+
+    <!-- Keyboard + Mouse -->
+    <div class="keyboard-mouse-row">
+      <div class="keyboard-wrapper">
+        <div id="keyboard" class="keyboard" role="img" aria-label="Virtual keyboard"></div>
+      </div>
+      <div class="mouse-capture-area" id="mouse-area" title="Click or scroll here to capture mouse events">
+        <svg class="mouse-svg" viewBox="0 0 60 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="14" width="54" height="72" rx="27" class="mouse-body"/>
+          <line x1="30" y1="14" x2="30" y2="44" class="mouse-divider"/>
+          <line x1="3" y1="44" x2="57" y2="44" class="mouse-divider"/>
+          <rect x="4" y="15" width="25" height="28" rx="12" class="mouse-btn" id="mouse-left" data-btn="left"/>
+          <rect x="31" y="15" width="25" height="28" rx="12" class="mouse-btn" id="mouse-right" data-btn="right"/>
+          <rect x="24" y="20" width="12" height="17" rx="6" class="mouse-wheel" id="mouse-middle" data-btn="middle"/>
+          <path d="M30 22 L27 27 L33 27 Z" class="scroll-arrow" id="scroll-up-arrow"/>
+          <path d="M30 35 L27 30 L33 30 Z" class="scroll-arrow" id="scroll-down-arrow"/>
+          <text x="16" y="37" class="mouse-btn-label">L</text>
+          <text x="44" y="37" class="mouse-btn-label">R</text>
+        </svg>
+        <div class="mouse-active-label" id="mouse-active-label"></div>
+      </div>
+    </div>
+
+    <!-- Below-keyboard: share + shortcuts side by side -->
+    <div class="below-keyboard">
+      <!-- Share Panel -->
+      <div id="share-panel" class="share-panel hidden">
+        <div class="share-url-row">
+          <input id="share-url" class="share-url-input" type="text" readonly aria-label="Shareable URL">
+          <button id="btn-copy-url" class="btn btn-primary" title="Copy URL">
+            <svg class="icon-xs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <div id="copy-feedback" class="copy-feedback hidden">Copied!</div>
+        <div id="translation-section" class="translation-section">
+          <h4>How it looks on other keyboards:</h4>
+          <div id="translations-grid" class="translations-grid"></div>
+        </div>
+      </div>
+
+      <!-- App Shortcuts Browser -->
+      <div class="shortcuts-browser">
+        <div class="browser-header">
+          <h2 id="shortcuts-browser-title">Keyboard Shortcuts</h2>
+          <div class="browser-search-wrap">
+            <svg class="icon-xs search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="shortcuts-search" class="browser-search" type="text" placeholder="Search shortcuts..." aria-label="Search shortcuts">
+          </div>
+        </div>
+        <div id="shortcuts-grid" class="shortcuts-grid"></div>
+        <div id="shortcuts-empty" class="shortcuts-empty hidden">
+          <p>Select an application above to browse its keyboard shortcuts.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="help-title">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <button class="modal-close" aria-label="Close">&times;</button>
+        <h2 id="help-title">How to use BoardKey</h2>
+        <div class="help-steps">
+          <div class="help-step">
+            <div class="step-number">1</div>
+            <div>
+              <strong>Capture a shortcut</strong>
+              <p>Press any key combination on your keyboard. The keys light up on the virtual keyboard.</p>
+            </div>
+          </div>
+          <div class="help-step">
+            <div class="step-number">2</div>
+            <div>
+              <strong>Share the URL</strong>
+              <p>A shareable URL is automatically generated. Copy and send it to anyone.</p>
+            </div>
+          </div>
+          <div class="help-step">
+            <div class="step-number">3</div>
+            <div>
+              <strong>They see it on their keyboard</strong>
+              <p>The shortcut is translated to match their keyboard layout and platform.</p>
+            </div>
+          </div>
+        </div>
+        <div class="help-extra">
+          <h3>Supported layouts</h3>
+          <p>20+ keyboard layouts including QWERTY, QWERTZ, AZERTY, Cyrillic, JIS, and more.</p>
+          <h3>Supported applications</h3>
+          <p>Browse shortcuts for 20 popular applications.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>BoardKey &mdash; Press a shortcut, share the URL, it translates to any keyboard.</p>
+    </footer>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

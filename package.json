@@ -1,0 +1,11 @@
+{
+  "name": "boardkey",
+  "version": "1.0.0",
+  "description": "Universal Keyboard Shortcut Translator — Press a shortcut, share the URL, and it translates to any keyboard layout.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "npx serve -l 3000",
+    "dev": "npx serve -l 3000 --no-clipboard"
+  }
+}
